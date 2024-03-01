@@ -1,0 +1,109 @@
+
+<html lang="en">
+<head>
+    <title>Lab 4</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Lab 4 JavaScript</h1>
+            <p>
+                This is my lab 4 of my class.
+            </p>
+        </div>
+    </div>
+
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="https://mamurjontursunov.github.io/index.html">Home</a></li>
+
+
+            </ul>
+        </div>
+    </nav>
+
+
+
+    <script>
+        var name;
+        var itemRequested;
+        var numItems;
+        now = new Date();
+        hour = now.getHours();
+        window.alert("Welcome to my store")
+    </script>
+    <script>
+        name = window.prompt("Please enter your name");
+        itemRequested = window.prompt("Please enter the item requested")
+        numItems = window.prompt("Please enter how many you want")
+    </script>
+    <script>
+        if (hour < 12) {
+            document.write("<h1> Good morning " + name + ", thank you for ordering")
+        }
+        else if (hour < 18) {
+            document.write("<h1> Good afternoon " + name + ", thank you for ordering")
+        }
+        else {
+            document.write("<h1> Good evening " + name + ", thank you for ordering")
+        }
+    </script>
+
+    <script>
+
+
+
+        document.write("<h2> You ordered: ")
+        if (numItems <= 1 && numItems < 100) {
+            document.write("<p1> A " + itemRequested) // for singular
+            delivery();
+        }
+        else if (numItems > 1 && numItems < 100) {
+            document.write("<p1> " + numItems + "<p1>  " + itemRequested + "<p1>s") // for plural
+            delivery();
+        }
+        else {
+            document.write("<h2> You have ordered too much, maximum is 99 items");  // for when user types more than 99
+        }
+
+
+        function delivery() // function to paste the delivery 
+        {
+
+
+            document.write("<h3> You ordered on: " + now)
+
+            var date = new Date();
+            date.setDate(date.getDate() + 7);
+
+            document.write("<h3> You will receive your order on " + date);
+
+        }
+
+
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>
