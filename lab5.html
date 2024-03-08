@@ -1,0 +1,126 @@
+<html lang="en">
+<head>
+    <title>Lab 5</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+<script>
+    function submitForm() {
+        
+
+        const customer = {
+            firstName: document.getElementById("firstName").value,
+            lastName: document.getElementById("lastName").value,
+            email: document.getElementById("email").value,
+            password: document.getElementById("password").value,
+            dateofbirth: document.getElementById("dateofbirth").value,
+
+        }
+
+        if (!customer.firstName || !customer.lastName || !customer.email || !customer.password || !customer.dateofbirth) {
+        document.getElementById("demo").innerHTML = ("All fields must be filled out"); // https://www.w3schools.com/jsref/prop_html_innerhtml.asp
+        return;
+    }
+
+    // check if password contains '!' or '?'
+    if (!customer.password.includes('!') && !customer.password.includes('?')) //  https://www.w3schools.com/jsref/jsref_includes.asp#:~:text=Description,Otherwise%20it%20returns%20false%20.
+    {
+        document.getElementById("demo").innerHTML = ("Password must contain at least one '!' or '?'");
+        return; 
+    }
+
+        var passwordArray = Array.from(customer.password); // make password into array
+        var AsteriskPassword = ''; // create variable to hold the asterisks
+        passwordArray.forEach(char => {AsteriskPassword = AsteriskPassword + '*'}); // for each character in the array, asterisk password = *
+
+        var displayText = 
+                      "Registration successful" + "<br>" +
+                      "First Name: " + customer.firstName + "<br>" +
+                      "Last Name: " + customer.lastName + "<br>" +
+                      "Email: " + customer.email + "<br>" +
+                      "Password: " + AsteriskPassword + "<br>" +
+                      "Date of Birth: " + customer.dateofbirth;
+
+        document.getElementById("demo").innerHTML = displayText; // https://www.w3schools.com/jsref/prop_html_innerhtml.asp
+}
+</script>
+
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Selling my computer</h1>
+            <p>
+                (Lab 5 JS Registration Page)
+            </p>
+        </div>
+    </div>
+
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="https://mamurjontursunov.github.io/index.html">Home</a></li>
+
+
+            </ul>
+        </div>
+    </nav>
+
+
+
+    <form id="myForm">
+        First name: <input type ="text" id="firstName" name="firstName"><br>
+        Last name: <input type="text" id="lastName" name="lastName"><br>
+        Password: <input type="password" id="password" name="password"><br>
+        Email Address: <input type="email" id="email" name="email"><br>
+        Date of Birth: <input type="date" id="dateofbirth" name="dateofbirth"><br>
+
+    </form>
+    <button onclick="submitForm()">Submit</button>
+    <p>click submit to register in buying this PC.</p>
+    <p id="demo"></p>
+
+    <script>
+        
+        document.body.style.fontSize = "32px"; 
+        document.body.style.fontFamily = "Comic Sans MS"; 
+    </script>
+
+
+<div class="row">
+    <div class="col-sm-6" style="background-color:yellow;">
+        <p> Specs of the PC </p>
+        <ol>
+            <li>2 TB NVME SSD</li>
+            <li>i9 14900k</li>
+            <li>RTX 4070 </li>
+            <li>2x 32GB DDR5-5600 RGB Major Brand Total 64GB Dual Channel Memory </li>
+        </ol>
+        <hr>
+
+    </div>
+
+
+
+    <div class="col-sm-6" style="background-color:red;">
+        <p> The PC</p>
+        <img src="https://rgbcustompc.com/cdn/shop/files/SY-PCBuild-FrostNov2023.png" class="img-responsive img-circle" width="200" height="200" alt="a gaming pc">
+    </div>
+</div>
+
+
+
+
+
+</body>
+
+</html>
