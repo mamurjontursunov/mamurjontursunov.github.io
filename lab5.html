@@ -11,42 +11,51 @@
     function submitForm() {
         
 
-        const customer = {
-            firstName: document.getElementById("firstName").value,
-            lastName: document.getElementById("lastName").value,
-            email: document.getElementById("email").value,
-            password: document.getElementById("password").value,
-            dateofbirth: document.getElementById("dateofbirth").value,
+        const customer = document.getElementById("myForm");
+        var customerArr1 = Array.from(customer);
+        var submission = {};
+        customerArr1.forEach((element) => console.log(element.name + " " + element.value));
+        customerArr1.forEach((element) => submission[element.name] = element.value);
 
-        }
+        
 
-        if (!customer.firstName || !customer.lastName || !customer.email || !customer.password || !customer.dateofbirth) {
-        document.getElementById("demo").innerHTML = ("All fields must be filled out"); // https://www.w3schools.com/jsref/prop_html_innerhtml.asp
+
+      if (submission.firstName == '' || submission.lastName == '' || submission.email == '' || submission.password == '' || submission.dateofbirth == '') {
+        document.getElementById("demo").innerHTML = ("All fields must be filled out"); // if no value in the variables then stop the code
         return;
     }
+   
 
-    // check if password contains '!' or '?'
-    if (!customer.password.includes('!') && !customer.password.includes('?')) //  https://www.w3schools.com/jsref/jsref_includes.asp#:~:text=Description,Otherwise%20it%20returns%20false%20.
+    
+    // check if password contains special character like '!' or '?'
+    if (!submission.password.includes('!') && !submission.password.includes('?')) //  https://www.w3schools.com/jsref/jsref_includes.asp#:~:text=Description,Otherwise%20it%20returns%20false%20.
     {
         document.getElementById("demo").innerHTML = ("Password must contain at least one '!' or '?'");
         return; 
     }
-
-        var passwordArray = Array.from(customer.password); // make password into array
+    
+   
+   
+   
+    
+        var passwordArray = Array.from(submission.password); // make password into array
         var AsteriskPassword = ''; // create variable to hold the asterisks
         passwordArray.forEach(char => {AsteriskPassword = AsteriskPassword + '*'}); // for each character in the array, asterisk password = *
+    
 
-        var displayText = 
+        document.getElementById("demo").innerHTML =   
                       "Registration successful" + "<br>" +
-                      "First Name: " + customer.firstName + "<br>" +
-                      "Last Name: " + customer.lastName + "<br>" +
-                      "Email: " + customer.email + "<br>" +
+                      "First Name: " + submission.firstName + "<br>" +
+                      "Last Name: " + submission.lastName + "<br>" +
+                      "Email: " + submission.email + "<br>" +
                       "Password: " + AsteriskPassword + "<br>" +
-                      "Date of Birth: " + customer.dateofbirth;
-
-        document.getElementById("demo").innerHTML = displayText; // https://www.w3schools.com/jsref/prop_html_innerhtml.asp
+                      "Date of Birth: " + submission.dateofbirth;; // https://www.w3schools.com/jsref/prop_html_innerhtml.asp
 }
+
+    
 </script>
+
+    
 
 
 </head>
