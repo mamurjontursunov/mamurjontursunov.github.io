@@ -19,8 +19,7 @@
 
         
 
-
-      if (submission.firstName == '' || submission.lastName == '' || submission.email == '' || submission.password == '' || submission.dateofbirth == '') {
+      if (!submission.firstName || !submission.lastName || !submission.email || !submission.password || !submission.dateofbirth) {
         document.getElementById("demo").innerHTML = ("All fields must be filled out"); // if no value in the variables then stop the code
         return;
     }
@@ -28,7 +27,9 @@
 
     
     // check if password contains special character like '!' or '?'
-    if (!submission.password.includes('!') && !submission.password.includes('?')) //  https://www.w3schools.com/jsref/jsref_includes.asp#:~:text=Description,Otherwise%20it%20returns%20false%20.
+    var checkspecialCharacter = RegExp(/[?!]/gm); // using regular expressions from CSC 226
+
+    if (!checkspecialCharacter.test(submission.password)) //  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/test
     {
         document.getElementById("demo").innerHTML = ("Password must contain at least one '!' or '?'");
         return; 
