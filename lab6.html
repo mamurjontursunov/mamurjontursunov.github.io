@@ -1,0 +1,145 @@
+<html lang="en">
+<head>
+    <title>Lab 6</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <style>
+        table, th, td {
+          border:1px solid black;
+          text-align:center; 
+            padding: 8px;
+        }
+        </style>
+</head>
+
+<body>
+
+
+
+    <div class="container">
+        <div class="jumbotron">
+            <h1 id = "headerid">Facts about dogs</h1>
+            <p>
+                (Lab 6 Consuming a REST API)
+            </p>
+        </div>
+    </div>
+
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="https://mamurjontursunov.github.io/index.html">Home</a></li>
+
+
+            </ul>
+        </div>
+    </nav>
+
+    <script>
+
+       async function apiGET()
+        {
+            const url = "https://brianobruno.github.io/cats.json";
+            const options = 
+                {
+                method: "GET",
+                };
+            const response = await 
+            fetch(url, options);
+            const result = await 
+            response.text();
+            const factsData = JSON.parse(result);
+
+            factsArray = factsData.facts;
+          
+            factsArray.sort((a,b) => a.factId - b.factId);
+            
+            console.log(factsArray.length);
+
+
+            if(factsArray.length)
+            {
+
+            document.getElementById("factid1").innerHTML = factsArray[0].factId;
+            document.getElementById("fact1").innerHTML = factsArray[0].text;
+            
+            document.getElementById("factid2").innerHTML = factsArray[1].factId;
+            document.getElementById("fact2").innerHTML = factsArray[1].text;
+
+            document.getElementById("factid3").innerHTML = factsArray[2].factId;
+            document.getElementById("fact3").innerHTML = factsArray[2].text;
+
+            document.getElementById("factid4").innerHTML = factsArray[3].factId;
+            document.getElementById("fact4").innerHTML = factsArray[3].text;
+
+            document.getElementById("factid5").innerHTML = factsArray[4].factId;
+            document.getElementById("fact5").innerHTML = factsArray[4].text;
+   
+            document.getElementById("photo").src = factsData.catPhoto;
+            
+            document.getElementById("headerid").innerHTML = "Facts about cats"
+
+            document.getElementById("photo").alt = "a photo of a cat"
+            }
+
+
+
+            }
+            
+        </script>
+
+
+<div class="col-sm-12">
+    <table>
+        <tr>
+          <th>factid</th>
+          <th>fact</th>
+        </tr>
+
+        <tr>
+          <td id = "factid1"> </td>
+          <td id = "fact1"> </td>
+        </tr>
+
+        <tr>
+            <td id = "factid2"> </td>
+            <td id = "fact2"> </td>
+          </tr>
+          <tr>
+            <td id = "factid3"> </td>
+            <td id = "fact3"> </td>
+          </tr>
+          <tr>
+            <td id = "factid4"> </td>
+            <td id = "fact4"> </td>
+          </tr>
+          <tr>
+            <td id = "factid5"> </td>
+            <td id = "fact5"> </td>
+          </tr>
+</div>
+
+
+
+
+<img id = "photo" src="https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg" alt = "a photo of a dog" style="width:500px;height:600px">
+
+
+
+
+
+
+<button onclick="apiGET()">Click me</button>
+<p>click button to get the cat facts api</p>
+<p id="demo"></p>
+        
+</body>
+
+</html>    
