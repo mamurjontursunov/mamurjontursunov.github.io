@@ -1,0 +1,336 @@
+<html lang="en">
+<head>
+    <title>Deal Finder</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <style>
+        table, th, td {
+          border:1px solid black;
+          text-align:center; 
+            padding: 8px;
+        }
+
+        body {
+            color: black; 
+        }
+
+        .navbar, .footer {
+            background-color: black;
+        }
+
+        .table {
+            color: black; 
+        }
+
+        .table th, .table td {
+            border-color: black; 
+        }
+
+        .form-control, .btn {
+            background-color: black; 
+            border: 1px solid black; 
+            color: black;
+        }
+
+
+        .custom-jumbotron {
+        background-color: black; 
+        color: white; 
+        }
+
+        body {
+    background-image: url('https://wallpapercave.com/wp/wp10439416.jpg'); 
+    background-size: cover; 
+    
+    
+    color: black; 
+}
+
+.table-custom {
+    background-color: black;
+    color: white; 
+}
+.table-custom th,
+.table-custom td {
+    border-color: white; 
+}
+
+input[type="text"], button {
+    font-size: 16px; 
+}
+
+
+label {
+    font-size: 16px; 
+}
+
+select {
+    font-size: 16px; 
+    padding: 8px; 
+}
+
+
+        </style>
+
+
+
+
+<style>
+    #DealTable {
+        display: none; 
+    }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+    <div class="container">
+        <div class="jumbotron jumbotron-fluid custom-jumbotron">
+            <h1 id = "headerid">Deal Finder</h1>
+            <h2>
+                Select a store and put an upper price limit to find the best deals currently using <a href="https://www.cheapshark.com/">CheapShark</a>
+            </h2>
+            
+        </div>
+    </div>
+
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="https://mamurjontursunov.github.io/index.html">Home</a></li>
+
+
+            </ul>
+        </div>
+    </nav>
+
+    <p id = "demo"></p>
+ 
+
+    
+    <script>
+
+
+
+        async function apiGET(event)
+         {
+            event.preventDefault(); 
+
+            const storeID = document.getElementById("storeName").value;
+   
+             const upperPrice = document.getElementById("upperPrice").value;
+
+             
+
+
+            const url = `https://www.cheapshark.com/api/1.0/deals?storeID=${storeID}&upperPrice=${upperPrice}`;
+             const options = 
+                 {
+                 method: "GET",
+                 };
+             const response = await fetch(url, options);
+             const result = await response.text();
+             const dealData = JSON.parse(result);
+
+             console.log(dealData); 
+
+             dealData.sort((a,b) => b.metacriticScore - a.metacriticScore);
+             clearPreviousResults(); // does exactly what the name suggests. For when switching stores and you dont want old store data in there.
+
+             if (dealData.length > 0) {
+                dealData.forEach((deal, i) => {
+                if (i < 10) { // Check to make sure we don't exceed the predefined rows
+                    document.getElementById(`gamename${i+1}`).textContent = deal.title;
+                    document.getElementById(`saleprice${i+1}`).textContent = deal.salePrice;
+                    document.getElementById(`normalprice${i+1}`).textContent = deal.normalPrice;
+
+                    if (deal.isOnSale) 
+                    { document.getElementById(`onsale${i+1}`).textContent = "Yes";
+                                    } 
+                                    else 
+                                    {
+                                        document.getElementById(`onsale${i+1}`).textContent = "No";
+                                    }                  
+                    if(deal.metacriticScore > 0)
+                    { document.getElementById(`metacritic${i+1}`).textContent = deal.metacriticScore;
+                                }
+                                else {
+                                    document.getElementById(`metacritic${i+1}`).textContent = 'N/A'; // For when there is no metacritic score
+                                }
+
+
+                }})
+
+        } else {
+            document.getElementById("demo").innerHTML = "No deals found";
+        }
+        document.getElementById('DealTable').style.display = 'table';
+
+
+
+             
+             
+         }
+
+
+         function clearPreviousResults() {
+        for (let i = 1; i <= 10; i++) {
+            document.getElementById(`gamename${i}`).textContent = "";
+            document.getElementById(`saleprice${i}`).textContent = "";
+            document.getElementById(`normalprice${i}`).textContent = "";
+            document.getElementById(`onsale${i}`).textContent = "";
+            document.getElementById(`metacritic${i}`).textContent = "";
+        }
+    }
+
+         
+            </script>
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            <h1>Deal Lookup</h1>
+            <br>
+            <br>
+            <br>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            <form id="DealLookup" onsubmit="apiGET(event)">
+            <label for="storeName">Store Name:</label>
+            <select name="storeName" id="storeName" required>
+                <option id="1" value="1">Steam</option>
+                <option id="3" value="3">GreenManGaming</option>
+                <option id="7" value="7">GOG</option>
+                <option id="8" value="8">Origin</option>
+                <option id="21" value="21">WinGameStore</option>
+                <option id="25" value="25">EpicGameStore</option>
+            </select>
+
+            <label for="upperPrice">Upper Price Limit:</label>
+            <input type="text" id="upperPrice" name="upperPrice" required>
+
+            <button type="submit">Search Deals</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <table class="table table-bordered table-custom" id = "DealTable">
+                <tr>
+              <th>Title of Game</th>
+              <th>Sale Price</th>
+              <th>Normal Price</th>
+              <th>On Sale?</th>
+              <th>Metacritic Score</th>
+                </tr>
+    
+                <tr>
+              <td id = "gamename1"> </td>
+              <td id = "saleprice1"> </td>
+              <td id = "normalprice1"> </td>
+              <td id = "onsale1"> </td>
+              <td id = "metacritic1"> </td>
+             </tr>
+    
+              <tr>
+                <td id = "gamename2"> </td>
+                <td id = "saleprice2"> </td>
+                <td id = "normalprice2"> </td>
+                <td id = "onsale2"> </td>
+                <td id = "metacritic2"> </td>
+              </tr>
+              <tr>
+                <td id = "gamename3"> </td>
+                <td id = "saleprice3"> </td>
+                <td id = "normalprice3"> </td>
+                <td id = "onsale3"> </td>
+                <td id = "metacritic3"> </td>
+              </tr>
+              <tr>
+                <td id = "gamename4"> </td>
+                <td id = "saleprice4"> </td>
+                <td id = "normalprice4"> </td>
+                <td id = "onsale4"> </td>
+                <td id = "metacritic4"> </td>
+              </tr>
+              <tr>
+                <td id = "gamename5"> </td>
+                <td id = "saleprice5"> </td>
+                <td id = "normalprice5"> </td>
+                <td id = "onsale5"> </td>
+                <td id = "metacritic5"> </td>
+              </tr>
+              <tr>
+                <td id = "gamename6"> </td>
+                <td id = "saleprice6"> </td>
+                <td id = "normalprice6"> </td>
+                <td id = "onsale6"> </td>
+                <td id = "metacritic6"> </td>
+              </tr>
+              <tr>
+                <td id = "gamename7"> </td>
+                <td id = "saleprice7"> </td>
+                <td id = "normalprice7"> </td>
+                <td id = "onsale7"> </td>
+                <td id = "metacritic7"> </td>
+              </tr>
+              <tr>
+                <td id = "gamename8"> </td>
+                <td id = "saleprice8"> </td>
+                <td id = "normalprice8"> </td>
+                <td id = "onsale8"> </td>
+                <td id = "metacritic8"> </td>
+              </tr>
+              <tr>
+                <td id = "gamename9"> </td>
+                <td id = "saleprice9"> </td>
+                <td id = "normalprice9"> </td>
+                <td id = "onsale9"> </td>
+                <td id = "metacritic9"> </td>
+              </tr>
+              <tr>
+                <td id = "gamename10"> </td>
+                <td id = "saleprice10"> </td>
+                <td id = "normalprice10"> </td>
+                <td id = "onsale10"> </td>
+                <td id = "metacritic10"> </td>
+              </tr>
+            </table>
+        </div>
+    </div>
+</div>
+    
+
+   
+
+
+
+        
+</body>
+
+</html>    

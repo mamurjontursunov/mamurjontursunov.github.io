@@ -1,0 +1,333 @@
+<html lang="en">
+<head>
+    <title>Game Lookup</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <style>
+        table, th, td {
+          border:1px solid black;
+          text-align:center; 
+            padding: 8px;
+        }
+
+        body {
+            color: black; 
+        }
+
+        .navbar, .footer {
+            background-color: black;
+        }
+
+        .table {
+            color: black; 
+        }
+
+        .table th, .table td {
+            border-color: black; 
+        }
+
+        .form-control, .btn {
+            background-color: black; 
+            border: 1px solid black; 
+            color: black;
+        }
+
+
+        .custom-jumbotron {
+        background-color: black; 
+        color: white; 
+        }
+
+        body {
+    background-image: url('https://wallpapercave.com/wp/wp10439416.jpg'); 
+    background-size: cover; 
+    
+    
+    color: black; 
+}
+
+.table-custom {
+    background-color: black;
+    color: white; 
+}
+.table-custom th,
+.table-custom td {
+    border-color: white; 
+}
+
+input[type="text"], button {
+    font-size: 16px; 
+}
+
+
+label {
+    font-size: 16px; 
+}
+
+
+
+
+
+
+
+
+        </style>
+
+<style>
+    #gameLookUpTable {
+        display: none; 
+    }
+</style>
+
+</head>
+
+<body>
+
+
+
+    <div class="container">
+        <div class="jumbotron jumbotron-fluid custom-jumbotron">
+            <h1 id = "headerid">Game Lookup</h1>
+            <h2>
+                Search a game to see if its currently onsale with it is sale price and original price using <a href="https://www.cheapshark.com/">CheapShark</a>
+            </h2>
+            
+        </div>
+    </div>
+
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="https://mamurjontursunov.github.io/index.html">Home</a></li>
+
+
+            </ul>
+        </div>
+    </nav>
+
+    <p id = "demo"></p>
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <label for="gameTitle">Title of the Game</label>
+                <input type="text" id="gameTitle">
+                <button onclick="searchGame()">Search</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+
+
+async function searchGame() {
+    const gameTitle = document.getElementById('gameTitle').value;
+    if (!gameTitle) {
+        alert('Please enter a game title.');
+        return;
+    }
+
+const titleOfGame = document.getElementById("gameTitle").value
+
+            const url = `https://www.cheapshark.com/api/1.0/games?title=${titleOfGame}&exact=1`;
+             const options = 
+                 {
+                 method: "GET",
+                 };
+             const response = await fetch(url, options);
+             const result = await response.text();
+             const gameTitleData = JSON.parse(result);
+             console.log(gameTitleData);
+
+             if (gameTitleData.length == 0) {
+            alert("No valid game found, please enter a title matching exactly the game");
+            return; 
+        }
+
+
+             const gameID = gameTitleData[0].gameID;
+
+            console.log(gameTitleData[0].gameID); 
+            gameLookUp(gameID);
+
+
+}
+
+async function gameLookUp(data) {
+
+    const url = `https://www.cheapshark.com/api/1.0/games?id=${data}`;
+             const options = 
+                 {
+                 method: "GET",
+                 };
+             const response = await fetch(url, options);
+             const result = await response.text();
+             const gameData = JSON.parse(result);
+             console.log(gameData);
+             console.log(gameData.deals);
+             
+             const gameDataDealsArray = gameData.deals;
+
+             const storeIDArray = [];
+             const knownStoresArray = [1, 3, 7, 8, 21, 25];
+
+             var index = 0;
+             gameDataDealsArray.forEach(element => {
+            if (knownStoresArray.includes(parseInt(element.storeID))) {
+                storeIDArray[index] = element;
+                index++;
+            }
+            gameData.deals = storeIDArray;
+        });
+
+       
+        console.log(storeIDArray);
+
+        clearPreviousResults();
+
+        gameData.deals.forEach((deal, index) => {
+            const idx = index + 1;  
+            document.getElementById(`title${idx}`).textContent = gameData.info.title;
+            document.getElementById(`currentprice${idx}`).textContent = deal.price;
+            document.getElementById(`originalprice${idx}`).textContent = deal.retailPrice;
+
+            if(deal.storeID == 1)
+            {
+            document.getElementById(`storeTitle${idx}`).textContent = "Steam";  
+            }
+            if(deal.storeID == 3)
+            {
+            document.getElementById(`storeTitle${idx}`).textContent = "GreenManGaming"; 
+            } 
+            if(deal.storeID == 7)
+            {
+            document.getElementById(`storeTitle${idx}`).textContent = "GOG";  
+            }
+            if(deal.storeID == 8)
+            {
+            document.getElementById(`storeTitle${idx}`).textContent = "Origin"; 
+            } 
+            if(deal.storeID == 21)
+            {
+            document.getElementById(`storeTitle${idx}`).textContent = "WinGameStore"; 
+            } 
+            if(deal.storeID == 25)
+            {
+            document.getElementById(`storeTitle${idx}`).textContent = "EpicGameStore";  
+            }
+
+            
+        });
+        document.getElementById('gameLookUpTable').style.display = 'table';
+
+
+}
+
+function clearPreviousResults(){
+    for (let i = 1; i <= 6; i++) {
+            document.getElementById(`title${i}`).textContent = '';
+            document.getElementById(`currentprice${i}`).textContent = '';
+            document.getElementById(`originalprice${i}`).textContent = '';
+            document.getElementById(`storeTitle${i}`).textContent = '';
+        }
+}
+
+    </script>
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            <table class="table table-bordered table-custom" id="gameLookUpTable">
+                <tr>
+              <th>Title of Game</th>
+              <th>Current Price</th>
+              <th>Original Price</th>
+              <th>Store</th>
+             
+                </tr>
+    
+                <tr>
+              <td id = "title1"> </td>
+              <td id = "currentprice1"> </td>
+              <td id = "originalprice1"> </td>
+              <td id = "storeTitle1"> </td>
+             </tr>
+             <tr>
+                <td id = "title2"> </td>
+                <td id = "currentprice2"> </td>
+                <td id = "originalprice2"> </td>
+                <td id = "storeTitle2"> </td>
+               </tr>
+               <tr>
+                <td id = "title3"> </td>
+                <td id = "currentprice3"> </td>
+                <td id = "originalprice3"> </td>
+                <td id = "storeTitle3"> </td>
+               </tr>
+               <tr>
+                <td id = "title4"> </td>
+                <td id = "currentprice4"> </td>
+                <td id = "originalprice4"> </td>
+                <td id = "storeTitle4"> </td>
+               </tr>
+               <tr>
+                <td id = "title5"> </td>
+                <td id = "currentprice5"> </td>
+                <td id = "originalprice5"> </td>
+                <td id = "storeTitle5"> </td>
+               </tr>
+               <td id = "title6"> </td>
+               <td id = "currentprice6"> </td>
+               <td id = "originalprice6"> </td>
+               <td id = "storeTitle6"> </td>
+              </tr>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+
+
+</html>
